@@ -323,7 +323,7 @@ def train_by_iters_amp(cfg, model, optimizer, lr_scheduler, train_dataloader, va
 
             data = to_cuda(data)
 
-            with torch.cuda.amp.autocast(dtype=torch.bfloat16):
+            with torch.cuda.amp.autocast(dtype=torch.float32):
                 pred_depth, losses_dict, conf = model(data)
 
             total_loss = losses_dict['total_loss'] / acc_batch
