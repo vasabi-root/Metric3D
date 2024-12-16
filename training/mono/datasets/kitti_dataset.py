@@ -174,7 +174,7 @@ class KITTIDataset(BaseDataset):
         crop_w_right = int(0.96405229 * W)
         
         new_depth[crop_h_up:crop_h_down, crop_w_left: crop_w_right] = depth[crop_h_up:crop_h_down, crop_w_left: crop_w_right]
-        new_depth[new_depth>65500] = 0
+        new_depth[new_depth>49] = 0
         new_depth /= self.metric_scale
         #print('image size', new_depth.shape, crop_h_up, crop_h_down, crop_w_left, crop_w_right)
         #self.logger.info('image size, {new_depth.shape}, {crop_h_up}, {crop_h_down}, {crop_w_left}, {crop_w_right}')
