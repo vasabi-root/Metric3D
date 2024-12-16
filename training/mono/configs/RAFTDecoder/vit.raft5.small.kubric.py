@@ -56,7 +56,7 @@ data_basic=dict(
 interval = 10
 log_interval = 10
 evaluation = dict(
-    online_eval=False, 
+    online_eval=True, 
     interval=interval, 
     metrics=['abs_rel', 'mae', 'delta1', 'rmse', 'normal_mean', 'normal_rmse', 'normal_a1'], 
     multi_dataset_eval=False,
@@ -82,7 +82,7 @@ lr_config = dict(policy='poly',
                  warmup_ratio=1e-6,
                  power=0.9, min_lr=1e-6, by_epoch=False)
 
-# acc_batch = 1
+acc_batch = 1
 batchsize_per_gpu = 4
 thread_per_gpu = 1
 

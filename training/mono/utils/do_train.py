@@ -402,14 +402,16 @@ def validate(cfg, iter, model, val_dataloader, tb_logger):
     Validate the model on single dataset
     """
     model.eval()
-    dist.barrier()
+    if cfg.distributed:
+        dist.barrier()
     logger = logging.getLogger()
     # prepare dir for visualization data
     save_val_meta_data_dir = create_dir_for_validate_meta(cfg.work_dir, iter)
     # save_html_path = save_val_meta_data_dir + '.html'
-    dataset_name = val_dataloader.dataset.data_name
+    # dataset_name = val_dataloader.dataset.data_name
+    dataset_name = 'valid_dataset'
 
-    save_point = max(int(len(val_dataloader) / 5), 1)
+    # save_point = max(int(len(val_dataloader) / 5), 1)
     # save_point = 2
     # depth metric meter
     dam = MetricAverageMeter(cfg.evaluation.metrics)
@@ -433,6 +435,7 @@ def validate(cfg, iter, model, val_dataloader, tb_logger):
         dam.update_metrics_gpu(pred_depth, gt_depth, mask, cfg.distributed)
 
         # save evaluation results
+        save_point = max(int(len(val_dataloader) / 5), 1)
         if i%save_point == 0 and main_process():
             save_val_imgs(iter, 
                           pred_depth, 
