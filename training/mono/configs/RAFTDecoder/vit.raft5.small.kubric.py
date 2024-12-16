@@ -53,7 +53,7 @@ data_basic=dict(
 # evaluation = dict(online_eval=True, interval=1000, metrics=['abs_rel', 'delta1', 'rmse'], multi_dataset_eval=True)
 #log_interval = 100
 
-interval = 20000
+interval = 10
 log_interval = 10
 evaluation = dict(
     online_eval=False, 
@@ -65,7 +65,7 @@ evaluation = dict(
 
 # save checkpoint during training, with '*_AMP' is employing the automatic mix precision training
 checkpoint_config = dict(by_epoch=False, interval=interval)
-runner = dict(type='IterBasedRunner_AMP', max_iters=1600)
+runner = dict(type='IterBasedRunner_AMP', max_iters=2000)
 
 # optimizer
 optimizer = dict(
@@ -83,7 +83,7 @@ lr_config = dict(policy='poly',
                  power=0.9, min_lr=1e-6, by_epoch=False)
 
 # acc_batch = 1
-batchsize_per_gpu = 8
+batchsize_per_gpu = 4
 thread_per_gpu = 1
 
 Kubric_dataset=dict(
@@ -124,7 +124,7 @@ Kubric_dataset=dict(
                               std=[58.395, 57.12, 57.375]
                          ),
                ],
-               #sample_size = 10,
+               sample_size = -1,
           ),
           
           val=dict(
@@ -141,7 +141,7 @@ Kubric_dataset=dict(
                               std=[58.395, 57.12, 57.375]
                          ),
                ],
-               sample_size = 1200,
+               sample_size = -1,
           ),
      )
 )
