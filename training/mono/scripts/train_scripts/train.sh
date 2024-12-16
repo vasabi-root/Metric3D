@@ -1,7 +1,8 @@
 cd ../../../
 
 python  mono/tools/train.py \
-        mono/configs/RAFTDecoder/vit.raft5.small.sanity_check.py \
+        mono/configs/RAFTDecoder/vit.raft5.small.kubric.py \
         --use-tensorboard \
         --launcher slurm \
-        --experiment_name set1
+        --experiment_name train1 \
+        --load-from model_pth \
