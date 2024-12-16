@@ -130,7 +130,7 @@ class BaseDataset(Dataset):
         self.transforms_cfg = cfg.data[phase]['pipeline']
         self.transforms_lib = 'mono.utils.transform.'
 
-        self.img_file_type = ['.png', '.jpg', '.jpeg', '.bmp', '.tif']
+        self.img_file_type = ['.png', '.jpg', '.jpeg', '.bmp', '.tif', '.tiff']
         self.np_file_type = ['.npz', '.npy']
 
         # update canonical sparce information
