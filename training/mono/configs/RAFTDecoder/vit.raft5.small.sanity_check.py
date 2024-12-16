@@ -14,6 +14,7 @@ _base_=['../_base_/losses/all_losses.py',
        '../_base_/datasets/uasol.py',
        '../_base_/datasets/pandaset.py',
        '../_base_/datasets/waymo.py',
+       '../_base_/datasets/blended_mvg.py'
 
        '../_base_/default_runtime.py',
        '../_base_/schedules/schedule_1m.py',
@@ -872,6 +873,14 @@ HM3D_dataset=dict(
     ))
 BlendedMVG_omni_dataset=dict(
     data = dict(
+          lib = 'BlendedMVGOmniDataset',
+          data_root = 'data/public_datasets',
+          data_name = 'BlendedMVG_omni',
+          transfer_to_canonical = True,
+          metric_scale = 1.0,
+          original_focal_length = 280,
+          original_size = (256, 256),
+          data_type='denselidar_nometric',
         train=dict(
         pipeline=[dict(type='BGR2RGB'),
                   dict(type='LabelScaleCononical'),

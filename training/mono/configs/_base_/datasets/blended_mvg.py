@@ -6,9 +6,9 @@ BlendedMVG_omni_dataset=dict(
     data_root = 'data/public_datasets',
     data_name = 'BlendedMVG_omni',
     transfer_to_canonical = True,
-    metric_scale = 512.0,
-    original_focal_length = 575.6656,
-    original_size = (576, 768),
+    metric_scale = 1.0,
+    original_focal_length = 280,
+    original_size = (256, 256),
     data_type='denselidar_nometric',
     data = dict(
     # configs for the training pipeline
