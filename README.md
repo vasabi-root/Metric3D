@@ -225,7 +225,7 @@ Our models also show powerful performance on normal benchmarks.
 For the ViT models, use the following environment：
 ```bash
 pip install -r requirements_v2.txt
-mim install mmcv
+mim install mmcv==2.1.0 mmsegmentation
 ```
 
 For ConvNeXt-L, it is 
