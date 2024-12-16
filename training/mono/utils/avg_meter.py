@@ -30,6 +30,7 @@ class MetricAverageMeter(AverageMeter):
         """ Initialize object. """
         # average meters for metrics
         self.abs_rel = AverageMeter()
+        self.mae = AverageMeter()
         self.rmse = AverageMeter()
         self.silog = AverageMeter()
         self.delta1 = AverageMeter()
@@ -80,6 +81,12 @@ class MetricAverageMeter(AverageMeter):
         abs_rel_sum = abs_rel_sum.numpy()
         valid_pics = valid_pics.numpy()
         self.abs_rel.update(abs_rel_sum, valid_pics)
+        
+        # Mean absolute error
+        mae_sum, valid_pics = get_mae(pred, target, mask)
+        mae_sum = mae_sum.numpy()
+        valid_pics = valid_pics.numpy()
+        self.mae.update(mae_sum, valid_pics)
         
         # squared relative error
         sqrel_sum, _ = get_sqrel_err(pred, target, mask)
@@ -149,6 +156,14 @@ class MetricAverageMeter(AverageMeter):
         abs_rel_sum = abs_rel_sum.cpu().numpy()
         valid_pics = int(valid_pics)
         self.abs_rel.update(abs_rel_sum, valid_pics)
+        
+        # Mean absolute error
+        mae_sum, valid_pics = get_mae(pred, target, mask)
+        if is_distributed:
+            dist.all_reduce(mae_sum), dist.all_reduce(valid_pics)
+        mae_sum = mae_sum.cpu().numpy()
+        valid_pics = int(valid_pics)
+        self.mae.update(mae_sum, valid_pics)
 
         # root mean squared error
         rmse_sum, _ = get_rmse_err(pred, target, mask)
@@ -301,6 +316,29 @@ def get_absrel_err(pred: torch.tensor,
     abs_err = abs_rel_sum / (num + 1e-10) 
     valid_pics = torch.sum(num > 0)
     return torch.sum(abs_err), valid_pics
+
+def get_mae(pred: torch.tensor, 
+                 target: torch.tensor, 
+                 mask: torch.tensor):
+    """
+    Computes mean absolute error (sum [b, c]).
+    Takes preprocessed depths (no nans, infs and non-positive values).
+    pred, target, and mask should be in the shape of [b, c, h, w]
+    """
+    
+    assert len(pred.shape) == 4, len(target.shape) == 4
+    b, c, h, w = pred.shape
+    mask = mask.to(torch.float)
+    t_m = target * mask
+    p_m = pred * mask
+    
+    abs = torch.abs(t_m - p_m)
+    abs_sum = torch.sum(abs.reshape((b, c, -1)), dim=2) # [b, c]
+    num = torch.sum(mask.reshape((b, c, -1)), dim=2) # [b, c]
+    mae = abs_sum / (num + 1e-10) 
+    valid_pics = torch.sum(num > 0)
+    
+    return torch.sum(mae), valid_pics
 
 def get_sqrel_err(pred: torch.tensor, 
                    target: torch.tensor, 
