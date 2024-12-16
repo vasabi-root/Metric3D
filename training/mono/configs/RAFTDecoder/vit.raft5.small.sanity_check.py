@@ -14,7 +14,7 @@ _base_=['../_base_/losses/all_losses.py',
        '../_base_/datasets/uasol.py',
        '../_base_/datasets/pandaset.py',
        '../_base_/datasets/waymo.py',
-       '../_base_/datasets/blended_mvg.py'
+       '../_base_/datasets/blended_mvg.py',
 
        '../_base_/default_runtime.py',
        '../_base_/schedules/schedule_1m.py',
