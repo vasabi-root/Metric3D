@@ -53,7 +53,7 @@ data_basic=dict(
 # evaluation = dict(online_eval=True, interval=1000, metrics=['abs_rel', 'delta1', 'rmse'], multi_dataset_eval=True)
 #log_interval = 100
 
-interval = 10
+interval = 100
 log_interval = 10
 evaluation = dict(
     online_eval=True, 
